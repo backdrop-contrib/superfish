@@ -2063,6 +2063,8 @@ function theme_superfish($variables) {
 
   $menu = menu_tree_all_data($menu_name);
 
+  drupal_alter('superfish_menu_data', $menu);
+
   if (function_exists('i18n_menu_localize_tree')) {
     $menu = i18n_menu_localize_tree($menu);
   }
