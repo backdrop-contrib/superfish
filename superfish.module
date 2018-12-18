@@ -2469,3 +2469,15 @@ function theme_superfish_menu_item_link(array $variables) {
   $link_options = $variables['link_options'];
   return l($menu_item['link']['title'], $menu_item['link']['href'], $link_options);
 }
+
+/**
+ * Implements hook_modernizr_info().
+ */
+function superfish_modernizr_info() {
+  $tests = array();
+
+  // Required by sfsmallscreen.js
+  $tests[] = 'mq';
+
+  return $tests;
+}
