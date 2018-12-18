@@ -1130,7 +1130,7 @@ function superfish_block_view($delta = 0) {
 
   $sfsettings['depth'] = variable_get('superfish_depth_' . $delta, '-1');
   $sfsettings['type'] = variable_get('superfish_type_' . $delta, 'horizontal');
-  $sfsettings['style'] = variable_get('superfish_style_' . $delta, 'default');
+  $sfsettings['style'] = variable_get('superfish_style_' . $delta, 'none');
   $sfsettings['expanded'] = variable_get('superfish_expanded_' . $delta, 0);
   $sfsettings['firstlast'] = variable_get('superfish_firstlast_' . $delta, 1);
   $sfsettings['zebra'] = variable_get('superfish_zebra_' . $delta, 1);
@@ -1449,7 +1449,7 @@ function superfish_block_view($delta = 0) {
     }
   }
 
-  $menu_name = variable_get('superfish_menu_' . $delta, 'primary-links:0');
+  $menu_name = variable_get('superfish_menu_' . $delta, 'main-menu:0');
   // Integration with the Domain Access module.
   $main = variable_get('menu_main_links_source');
   $secondary = variable_get('menu_secondary_links_source');
