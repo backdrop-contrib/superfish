@@ -1497,10 +1497,11 @@ function superfish_block_view($delta = 0) {
       $sfplugins = superfish_array_filter($sfplugins);
 
       // Prepare the JavaScript settings.
-      $javascript['superfish']["sf$delta"]['id'] = $delta;
-      $javascript['superfish']["sf$delta"]['sf'] = isset($sfoptions) ? $sfoptions : array();
+      $index = 'menu-' . $delta;
+      $javascript['superfish'][$index]['id'] = $delta;
+      $javascript['superfish'][$index]['sf'] = isset($sfoptions) ? $sfoptions : array();
       if (!empty($sfplugins)) {
-        $javascript['superfish']["sf$delta"]['plugins'] = $sfplugins;
+        $javascript['superfish'][$index]['plugins'] = $sfplugins;
       }
       // Adding required Javascript.
       if (superfish_library('javascript', 'superfish.js', 'check')) {
