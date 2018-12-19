@@ -2089,7 +2089,18 @@ function theme_superfish($variables) {
     }
   }
   else {
-    $result = db_query("SELECT title FROM {menu_custom} WHERE menu_name = :a", array(':a' => $menu_name))->fetchField();
+    $result = '';
+    if (module_exists('i18n_string')) {
+      $string = module_invoke('i18n_string', 'build', "menu:menu:$menu_name:title");
+      if ($string) {
+        $result = $string->get_translation($GLOBALS['language']->language);
+      }
+    }
+    if (!$result) {
+      $result = db_query("SELECT `title` FROM {menu_custom} WHERE `menu_name` = :a",
+        array(':a' => $menu_name)
+      )->fetchField();
+    }
     $title = check_plain($result);
   }
 
