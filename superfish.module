@@ -57,7 +57,7 @@ function superfish_block_info() {
   for ($i = 1; $i <= $number; $i++) {
     $blocks[$i] = array(
       'info' => variable_get('superfish_name_' . $i, 'Superfish ' . $i) . ' (Superfish)',
-      'cache' => DRUPAL_NO_CACHE,
+      'cache' => variable_get('superfish_cache_' . $i, DRUPAL_NO_CACHE),
     );
   }
   return $blocks;
@@ -95,6 +95,22 @@ function superfish_block_configure($delta = 0) {
       array('!link' => l(t('Blocks administration page'), 'admin/structure/block'))
     ),
     '#default_value' => variable_get('superfish_name_' . $delta, 'Superfish ' . $delta),
+  );
+  $form['superfish_cache_' . $delta] = array(
+    '#type' => 'select',
+    '#title' => t('Block cache'),
+    '#description' => t('What type of caching to apply to this block.'),
+    '#options' => array(
+      DRUPAL_NO_CACHE => sprintf('%1$s (%2$s)',
+        t('None'),
+        t('Recommended')
+      ),
+      DRUPAL_CACHE_PER_ROLE => t('Cache per role'),
+      DRUPAL_CACHE_PER_USER => t('Cache per user'),
+      DRUPAL_CACHE_PER_PAGE => t('Cache per page'),
+      DRUPAL_CACHE_GLOBAL => t('Cache globally'),
+    ),
+    '#default_value' => variable_get('superfish_cache_' . $delta, DRUPAL_NO_CACHE),
   );
   $form['sf-settings'] = array(
     '#type' => 'fieldset',
@@ -1048,6 +1064,7 @@ function superfish_block_configure($delta = 0) {
  */
 function superfish_block_save($delta = 0, $edit = array()) {
   variable_set('superfish_name_' . $delta, $edit['superfish_name_' . $delta]);
+  variable_set('superfish_cache_' . $delta, $edit['superfish_cache_' . $delta]);
   variable_set('superfish_menu_' . $delta, $edit['superfish_menu_' . $delta]);
   variable_set('superfish_depth_' . $delta, $edit['superfish_depth_' . $delta]);
   variable_set('superfish_type_' . $delta, $edit['superfish_type_' . $delta]);
