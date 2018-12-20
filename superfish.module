@@ -2284,7 +2284,7 @@ function theme_superfish_build($variables) {
 
       $expanded = ($sfsettings['expanded'] == 1) ? (($menu_item['link']['expanded'] == 1) ? TRUE : FALSE) : TRUE;
 
-      if (!empty($menu_item['link']['has_children']) && !empty($menu_item['below']) && $depth != 0 && $expanded === TRUE) {
+      if (!empty($menu_item['below']) && $depth != 0 && $expanded === TRUE) {
 
         // Megamenu is still beta, there is a good chance this will be changed.
         if (!empty($settings['megamenu_exclude'])) {
