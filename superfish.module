@@ -2182,17 +2182,17 @@ function theme_superfish_build($variables) {
   $total_children = $parent_children = $single_children = 0;
   $i = 1;
 
+  // sfTouchscreen.
+  // Adding cloned parent to the sub-menu.
+  if ($clone_parent !== FALSE) {
+    array_unshift($menu, $clone_parent);
+  }
+
   // Reckon the total number of available menu items.
   foreach ($menu as $menu_item) {
     if (!isset($menu_item['link']['hidden']) || $menu_item['link']['hidden'] == 0) {
       $total_children++;
     }
-  }
-
-  // sfTouchscreen.
-  // Adding cloned parent to the sub-menu.
-  if ($clone_parent !== FALSE) {
-    array_unshift($menu, $clone_parent);
   }
 
   foreach ($menu as $menu_item) {
@@ -2213,7 +2213,7 @@ function theme_superfish_build($variables) {
       $item_class[] = ($settings['itemdepth'] == 1) ? 'sf-depth-' . $menu_item['link']['depth'] : '';
       $link_class[] = ($settings['itemdepth'] == 1) ? 'sf-depth-' . $menu_item['link']['depth'] : '';
       $item_class[] = ($settings['liclass']) ? trim($settings['liclass']) : '';
-      $item_class[] = ($clone_parent !== FALSE) ? 'sf-clone-parent' : '';
+      $item_class[] = ($clone_parent !== FALSE && $i == 1) ? 'sf-clone-parent' : '';
       if (strpos($settings['hlclass'], ' ')) {
         $l = explode(' ', $settings['hlclass']);
         foreach ($l as $c) {
@@ -2311,10 +2311,10 @@ function theme_superfish_build($variables) {
             $below_visible[] = 1;
           }
         }
-        if ($settings['clone_parent'] == 1 && in_array(1, $below_visible)) {
+        if ($settings['clone_parent'] == 1 && in_array(1, $below_visible) && $menu_item['link']['page_callback'] != 'drupal_not_found') {
           $clone_parent = $menu_item;
           unset($clone_parent['below']);
-          unset($clone_parent['has_children']);
+          unset($clone_parent['link']['has_children']);
         }
         else {
           $clone_parent = FALSE;
