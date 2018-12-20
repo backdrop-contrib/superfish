@@ -2064,7 +2064,7 @@ function superfish_build_page_trail($page_menu) {
     }
   }
   // Allows other modules to alter the active trail.
-  drupal_alter('superfish_active_trail', $trail);
+  drupal_alter('superfish_active_trail', $trail, $page_menu);
   return $trail;
 }
 
