@@ -8,7 +8,7 @@
 /**
  * The Superfish plugin URI.
  */
-define('SUPERFISH_DOWNLOAD_URI', 'https://github.com/mehrpadin/Superfish-for-Drupal/archive/1.x.zip');
+define('SUPERFISH_DOWNLOAD_URI', 'https://github.com/mehrpadin/Superfish-for-Backdrop/archive/1.x.zip');
 
 /**
  * Implements hook_drush_command().
@@ -65,7 +65,7 @@ function drush_superfish_plugin() {
   // Download the zip archive.
   if ($filepath = drush_download_file(SUPERFISH_DOWNLOAD_URI)) {
     $filename = basename($filepath);
-    $dirname = 'Superfish-for-Drupal-' . basename($filepath, '.zip');
+    $dirname = 'Superfish-for-Backdrop-' . basename($filepath, '.zip');
 
     // Remove any existing Superfish plugin directory.
     if (is_dir($dirname) || is_dir('superfish')) {

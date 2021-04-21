@@ -1,10 +1,10 @@
 /**
  * @file
- * The Superfish Drupal Behavior to apply the Superfish jQuery plugin to lists.
+ * The Superfish Backdrop Behavior to apply the Superfish jQuery plugin to lists.
  */
 
 (function ($) {
-  Drupal.behaviors.superfish = {
+  Backdrop.behaviors.superfish = {
     attach: function (context, settings) {
       // Take a look at each list to apply Superfish to.
       $.each(settings.superfish || {}, function(index, options) {
@@ -43,6 +43,5 @@
         });
       });
     },
-    weight: -11,
   };
 })(jQuery);

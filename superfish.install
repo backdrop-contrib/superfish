@@ -19,10 +19,10 @@ function superfish_uninstall() {
  */
 function superfish_enable() {
   if (superfish_library_check()) {
-    drupal_set_message(t('In order to use Superfish, go to the <a href="@block">Blocks</a> page and enable a Superfish block.', array('@block' => 'structure/block')));
+    backdrop_set_message(t('In order to use Superfish, go to the <a href="@block">Blocks</a> page and enable a Superfish block.', array('@block' => 'structure/block')));
   }
   else {
-    drupal_set_message(t('Superfish library is missing. Please refer to the <a href="@documentation">plugin documentation</a> for how you can fix this issue; Once done, go to the <a href="@block">Blocks</a> page and enable a Superfish block.', array('@documentation' => 'http://drupal.org/node/1125896', '@block' => 'structure/block')), 'warning');
+    backdrop_set_message(t('Superfish library is missing. Please refer to the <a href="@documentation">plugin documentation</a> for how you can fix this issue; Once done, go to the <a href="@block">Blocks</a> page and enable a Superfish block.', array('@documentation' => 'http://drupal.org/node/1125896', '@block' => 'structure/block')), 'warning');
   }
 }
 
@@ -61,13 +61,8 @@ function superfish_requirements($phase) {
  * Verifies Superfish library is present.
  */
 function superfish_library_check() {
-  if (function_exists('libraries_get_libraries')) {
-    $library = libraries_get_libraries();
-    if (isset($library['superfish'])) {
-      return TRUE;
-    }
-  }
-  elseif (file_exists('sites/all/libraries/superfish/superfish.js') || file_exists('profiles/' . drupal_get_profile() . '/libraries/superfish/superfish.js')) {
+  $path = backdrop_get_path('module', 'superfish');
+  if (file_exists($path . '/lib/superfish/superfish.js')) {
     return TRUE;
   }
   return FALSE;
@@ -77,37 +72,178 @@ function superfish_library_check() {
  * A function to check the Superfish library version.
  */
 function superfish_library_version() {
-  // Ensure the Libraries API module is installed and working.
-  if (module_exists('libraries') && function_exists('libraries_get_path') && libraries_get_path('superfish') != '') {
-    $directory = libraries_get_path('superfish');
-  }
-  // Otherwise use the default directory.
-  elseif (file_exists('profiles/' . drupal_get_profile() . '/libraries/superfish')) {
-    $directory = 'profiles/' . drupal_get_profile() . '/libraries/superfish';
-  }
-  else {
-    $directory = 'sites/all/libraries/superfish';
-  }
-
-  // Get the library version.
-  if (file_exists($directory . '/VERSION')) {
-    $version = file_get_contents($directory . '/VERSION');
-    // Removing blank lines and white spaces.
-    $version = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", trim($version));
-    if (!empty($version)) {
-      return $version;
-    }
-    else {
-      return '';
-    }
-  }
-  else {
-    return '';
-  }
+  $path = backdrop_get_path('module', 'superfish');
+  $directory = $path . '/lib/superfish';
+  $version = file_get_contents($directory . '/VERSION');
+  return $version;
 }
 
 /**
  * Implements hook_update_N().
  */
-function superfish_update_7100() {
+function superfish_update_1000() {
+  $config = config('superfish.settings');
+  $config->set('superfish_number', update_variable_get('superfish_number', '4'));
+  $config->set('superfish_name_i', update_variable_get('superfish_name_i', 'dynamic variable in file /superfish/superfish.module line 59'));
+  $config->set('superfish_cache_i', update_variable_get('superfish_cache_i', 'dynamic variable in file /superfish/superfish.module line 60'));
+  $config->set('superfish_name_delta', update_variable_get('superfish_name_delta', 'dynamic variable in file /superfish/superfish.module line 97'));
+  $config->set('superfish_cache_delta', update_variable_get('superfish_cache_delta', 'dynamic variable in file /superfish/superfish.module line 113'));
+  $config->set('superfish_menu_delta', update_variable_get('superfish_menu_delta', 'dynamic variable in file /superfish/superfish.module line 1469'));
+  $config->set('superfish_type_delta', update_variable_get('superfish_type_delta', 'dynamic variable in file /superfish/superfish.module line 1149'));
+  $config->set('superfish_style_delta', update_variable_get('superfish_style_delta', 'dynamic variable in file /superfish/superfish.module line 1150'));
+  $config->set('superfish_arrow_delta', update_variable_get('superfish_arrow_delta', 'dynamic variable in file /superfish/superfish.module line 1225'));
+  $config->set('superfish_shadow_delta', update_variable_get('superfish_shadow_delta', 'dynamic variable in file /superfish/superfish.module line 1226'));
+  $config->set('superfish_slide_delta', update_variable_get('superfish_slide_delta', 'dynamic variable in file /superfish/superfish.module line 1186'));
+  $config->set('superfish_depth_delta', update_variable_get('superfish_depth_delta', 'dynamic variable in file /superfish/superfish.module line 1148'));
+  $config->set('superfish_expanded_delta', update_variable_get('superfish_expanded_delta', 'dynamic variable in file /superfish/superfish.module line 1151'));
+  $config->set('superfish_use_link_theme_delta', update_variable_get('superfish_use_link_theme_delta', 'dynamic variable in file /superfish/superfish.module line 1166'));
+  $config->set('superfish_use_item_theme_delta', update_variable_get('superfish_use_item_theme_delta', 'dynamic variable in file /superfish/superfish.module line 1167'));
+  $config->set('superfish_clone_parent_delta', update_variable_get('superfish_clone_parent_delta', 'dynamic variable in file /superfish/superfish.module line 1168'));
+  $config->set('superfish_speed_delta', update_variable_get('superfish_speed_delta', 'dynamic variable in file /superfish/superfish.module line 1221'));
+  $config->set('superfish_delay_delta', update_variable_get('superfish_delay_delta', 'dynamic variable in file /superfish/superfish.module line 1184'));
+  $config->set('superfish_pathclass_delta', update_variable_get('superfish_pathclass_delta', 'dynamic variable in file /superfish/superfish.module line 1182'));
+  $config->set('superfish_pathlevels_delta', update_variable_get('superfish_pathlevels_delta', 'dynamic variable in file /superfish/superfish.module line 1183'));
+  $config->set('superfish_bgf_delta', update_variable_get('superfish_bgf_delta', 'dynamic variable in file /superfish/superfish.module line 1451'));
+  $config->set('superfish_spp_delta', update_variable_get('superfish_spp_delta', 'dynamic variable in file /superfish/superfish.module line 1446'));
+  $config->set('superfish_hid_delta', update_variable_get('superfish_hid_delta', 'dynamic variable in file /superfish/superfish.module line 1228'));
+  $config->set('superfish_amw_delta', update_variable_get('superfish_amw_delta', 'dynamic variable in file /superfish/superfish.module line 1236'));
+  $config->set('superfish_touch_delta', update_variable_get('superfish_touch_delta', 'dynamic variable in file /superfish/superfish.module line 1241'));
+  $config->set('superfish_touchbh_delta', update_variable_get('superfish_touchbh_delta', 'dynamic variable in file /superfish/superfish.module line 1244'));
+  $config->set('superfish_touchdh_delta', update_variable_get('superfish_touchdh_delta', 'dynamic variable in file /superfish/superfish.module line 1246'));
+  $config->set('superfish_touchbp_delta', update_variable_get('superfish_touchbp_delta', 'dynamic variable in file /superfish/superfish.module line 1256'));
+  $config->set('superfish_touchbpu_delta', update_variable_get('superfish_touchbpu_delta', 'dynamic variable in file /superfish/superfish.module line 1258'));
+  $config->set('superfish_touchua_delta', update_variable_get('superfish_touchua_delta', 'dynamic variable in file /superfish/superfish.module line 1265'));
+  $config->set('superfish_touchual_delta', update_variable_get('superfish_touchual_delta', 'dynamic variable in file /superfish/superfish.module line 1302'));
+  $config->set('superfish_touchuam_delta', update_variable_get('superfish_touchuam_delta', 'dynamic variable in file /superfish/superfish.module line 1264'));
+  $config->set('superfish_small_delta', update_variable_get('superfish_small_delta', 'dynamic variable in file /superfish/superfish.module line 1338'));
+  $config->set('superfish_smallbp_delta', update_variable_get('superfish_smallbp_delta', 'dynamic variable in file /superfish/superfish.module line 1348'));
+  $config->set('superfish_smallbpu_delta', update_variable_get('superfish_smallbpu_delta', 'dynamic variable in file /superfish/superfish.module line 1350'));
+  $config->set('superfish_smallua_delta', update_variable_get('superfish_smallua_delta', 'dynamic variable in file /superfish/superfish.module line 1357'));
+  $config->set('superfish_smallual_delta', update_variable_get('superfish_smallual_delta', 'dynamic variable in file /superfish/superfish.module line 1391'));
+  $config->set('superfish_smalluam_delta', update_variable_get('superfish_smalluam_delta', 'dynamic variable in file /superfish/superfish.module line 1356'));
+  $config->set('superfish_smallact_delta', update_variable_get('superfish_smallact_delta', 'dynamic variable in file /superfish/superfish.module line 1413'));
+  $config->set('superfish_smallset_delta', update_variable_get('superfish_smallset_delta', 'dynamic variable in file /superfish/superfish.module line 1505'));
+  $config->set('superfish_smallasa_delta', update_variable_get('superfish_smallasa_delta', 'dynamic variable in file /superfish/superfish.module line 1416'));
+  $config->set('superfish_smallcmc_delta', update_variable_get('superfish_smallcmc_delta', 'dynamic variable in file /superfish/superfish.module line 1417'));
+  $config->set('superfish_smallecm_delta', update_variable_get('superfish_smallecm_delta', 'dynamic variable in file /superfish/superfish.module line 1419'));
+  $config->set('superfish_smallchc_delta', update_variable_get('superfish_smallchc_delta', 'dynamic variable in file /superfish/superfish.module line 1418'));
+  $config->set('superfish_smallech_delta', update_variable_get('superfish_smallech_delta', 'dynamic variable in file /superfish/superfish.module line 1420'));
+  $config->set('superfish_smallicm_delta', update_variable_get('superfish_smallicm_delta', 'dynamic variable in file /superfish/superfish.module line 1421'));
+  $config->set('superfish_smallich_delta', update_variable_get('superfish_smallich_delta', 'dynamic variable in file /superfish/superfish.module line 1422'));
+  $config->set('superfish_smallamt_delta', update_variable_get('superfish_smallamt_delta', 'dynamic variable in file /superfish/superfish.module line 1509'));
+  $config->set('superfish_smallabt_delta', update_variable_get('superfish_smallabt_delta', 'dynamic variable in file /superfish/superfish.module line 1438'));
+  $config->set('superfish_supersubs_delta', update_variable_get('superfish_supersubs_delta', 'dynamic variable in file /superfish/superfish.module line 1456'));
+  $config->set('superfish_supersubs_emm_delta', update_variable_get('superfish_supersubs_emm_delta', 'dynamic variable in file /superfish/superfish.module line 1458'));
+  $config->set('superfish_minwidth_delta', update_variable_get('superfish_minwidth_delta', 'dynamic variable in file /superfish/superfish.module line 1459'));
+  $config->set('superfish_maxwidth_delta', update_variable_get('superfish_maxwidth_delta', 'dynamic variable in file /superfish/superfish.module line 1460'));
+  $config->set('superfish_multicolumn_delta', update_variable_get('superfish_multicolumn_delta', 'dynamic variable in file /superfish/superfish.module line 1175'));
+  $config->set('superfish_mcexclude_delta', update_variable_get('superfish_mcexclude_delta', 'dynamic variable in file /superfish/superfish.module line 1179'));
+  $config->set('superfish_mcdepth_delta', update_variable_get('superfish_mcdepth_delta', 'dynamic variable in file /superfish/superfish.module line 1176'));
+  $config->set('superfish_mclevels_delta', update_variable_get('superfish_mclevels_delta', 'dynamic variable in file /superfish/superfish.module line 1178'));
+  $config->set('superfish_hhldescription_delta', update_variable_get('superfish_hhldescription_delta', 'dynamic variable in file /superfish/superfish.module line 1169'));
+  $config->set('superfish_hldescription_delta', update_variable_get('superfish_hldescription_delta', 'dynamic variable in file /superfish/superfish.module line 1170'));
+  $config->set('superfish_hldmenus_delta', update_variable_get('superfish_hldmenus_delta', 'dynamic variable in file /superfish/superfish.module line 1171'));
+  $config->set('superfish_hldexclude_delta', update_variable_get('superfish_hldexclude_delta', 'dynamic variable in file /superfish/superfish.module line 1173'));
+  $config->set('superfish_wrapmul_delta', update_variable_get('superfish_wrapmul_delta', 'dynamic variable in file /superfish/superfish.module line 1162'));
+  $config->set('superfish_wrapul_delta', update_variable_get('superfish_wrapul_delta', 'dynamic variable in file /superfish/superfish.module line 1163'));
+  $config->set('superfish_wraphl_delta', update_variable_get('superfish_wraphl_delta', 'dynamic variable in file /superfish/superfish.module line 1164'));
+  $config->set('superfish_wraphlt_delta', update_variable_get('superfish_wraphlt_delta', 'dynamic variable in file /superfish/superfish.module line 1165'));
+  $config->set('superfish_firstlast_delta', update_variable_get('superfish_firstlast_delta', 'dynamic variable in file /superfish/superfish.module line 1152'));
+  $config->set('superfish_zebra_delta', update_variable_get('superfish_zebra_delta', 'dynamic variable in file /superfish/superfish.module line 1153'));
+  $config->set('superfish_dfirstlast_delta', update_variable_get('superfish_dfirstlast_delta', 'dynamic variable in file /superfish/superfish.module line 1154'));
+  $config->set('superfish_dzebra_delta', update_variable_get('superfish_dzebra_delta', 'dynamic variable in file /superfish/superfish.module line 1155'));
+  $config->set('superfish_itemcount_delta', update_variable_get('superfish_itemcount_delta', 'dynamic variable in file /superfish/superfish.module line 1156'));
+  $config->set('superfish_itemcounter_delta', update_variable_get('superfish_itemcounter_delta', 'dynamic variable in file /superfish/superfish.module line 1157'));
+  $config->set('superfish_itemdepth_delta', update_variable_get('superfish_itemdepth_delta', 'dynamic variable in file /superfish/superfish.module line 993'));
+  $config->set('superfish_ulclass_delta', update_variable_get('superfish_ulclass_delta', 'dynamic variable in file /superfish/superfish.module line 1159'));
+  $config->set('superfish_liclass_delta', update_variable_get('superfish_liclass_delta', 'dynamic variable in file /superfish/superfish.module line 1160'));
+  $config->set('superfish_hlclass_delta', update_variable_get('superfish_hlclass_delta', 'dynamic variable in file /superfish/superfish.module line 1161'));
+  $config->set('superfish_pathcss_delta', update_variable_get('superfish_pathcss_delta', 'dynamic variable in file /superfish/superfish.module line 1542'));
+  $config->set('superfish_itemdepthdelta', update_variable_get('superfish_itemdepthdelta', 'dynamic variable in file /superfish/superfish.module line 1158'));
+  $config->save();
+
+  update_variable_del('superfish_number');
+  update_variable_del('superfish_name_i');
+  update_variable_del('superfish_cache_i');
+  update_variable_del('superfish_name_delta');
+  update_variable_del('superfish_cache_delta');
+  update_variable_del('superfish_menu_delta');
+  update_variable_del('superfish_type_delta');
+  update_variable_del('superfish_style_delta');
+  update_variable_del('superfish_arrow_delta');
+  update_variable_del('superfish_shadow_delta');
+  update_variable_del('superfish_slide_delta');
+  update_variable_del('superfish_depth_delta');
+  update_variable_del('superfish_expanded_delta');
+  update_variable_del('superfish_use_link_theme_delta');
+  update_variable_del('superfish_use_item_theme_delta');
+  update_variable_del('superfish_clone_parent_delta');
+  update_variable_del('superfish_speed_delta');
+  update_variable_del('superfish_delay_delta');
+  update_variable_del('superfish_pathclass_delta');
+  update_variable_del('superfish_pathlevels_delta');
+  update_variable_del('superfish_bgf_delta');
+  update_variable_del('superfish_spp_delta');
+  update_variable_del('superfish_hid_delta');
+  update_variable_del('superfish_amw_delta');
+  update_variable_del('superfish_touch_delta');
+  update_variable_del('superfish_touchbh_delta');
+  update_variable_del('superfish_touchdh_delta');
+  update_variable_del('superfish_touchbp_delta');
+  update_variable_del('superfish_touchbpu_delta');
+  update_variable_del('superfish_touchua_delta');
+  update_variable_del('superfish_touchual_delta');
+  update_variable_del('superfish_touchuam_delta');
+  update_variable_del('superfish_small_delta');
+  update_variable_del('superfish_smallbp_delta');
+  update_variable_del('superfish_smallbpu_delta');
+  update_variable_del('superfish_smallua_delta');
+  update_variable_del('superfish_smallual_delta');
+  update_variable_del('superfish_smalluam_delta');
+  update_variable_del('superfish_smallact_delta');
+  update_variable_del('superfish_smallset_delta');
+  update_variable_del('superfish_smallasa_delta');
+  update_variable_del('superfish_smallcmc_delta');
+  update_variable_del('superfish_smallecm_delta');
+  update_variable_del('superfish_smallchc_delta');
+  update_variable_del('superfish_smallech_delta');
+  update_variable_del('superfish_smallicm_delta');
+  update_variable_del('superfish_smallich_delta');
+  update_variable_del('superfish_smallamt_delta');
+  update_variable_del('superfish_smallabt_delta');
+  update_variable_del('superfish_supersubs_delta');
+  update_variable_del('superfish_supersubs_emm_delta');
+  update_variable_del('superfish_minwidth_delta');
+  update_variable_del('superfish_maxwidth_delta');
+  update_variable_del('superfish_multicolumn_delta');
+  update_variable_del('superfish_mcexclude_delta');
+  update_variable_del('superfish_mcdepth_delta');
+  update_variable_del('superfish_mclevels_delta');
+  update_variable_del('superfish_hhldescription_delta');
+  update_variable_del('superfish_hldescription_delta');
+  update_variable_del('superfish_hldmenus_delta');
+  update_variable_del('superfish_hldexclude_delta');
+  update_variable_del('superfish_wrapmul_delta');
+  update_variable_del('superfish_wrapul_delta');
+  update_variable_del('superfish_wraphl_delta');
+  update_variable_del('superfish_wraphlt_delta');
+  update_variable_del('superfish_firstlast_delta');
+  update_variable_del('superfish_zebra_delta');
+  update_variable_del('superfish_dfirstlast_delta');
+  update_variable_del('superfish_dzebra_delta');
+  update_variable_del('superfish_itemcount_delta');
+  update_variable_del('superfish_itemcounter_delta');
+  update_variable_del('superfish_itemdepth_delta');
+  update_variable_del('superfish_ulclass_delta');
+  update_variable_del('superfish_liclass_delta');
+  update_variable_del('superfish_hlclass_delta');
+  update_variable_del('superfish_pathcss_delta');
+  update_variable_del('superfish_itemdepthdelta');
+}
+
+/**
+ * Implements hook_install().
+ */
+function superfish_install() {
+
 }
