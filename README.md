@@ -1,7 +1,7 @@
 Superfish
 =========
 
-The module integrates jQuery Superfish plug-in to Backdrop CMS.
+The module integrates jQuery Superfish plug-in with Backdrop CMS.
 
 Installation
 ------------
